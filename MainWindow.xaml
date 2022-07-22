@@ -5,39 +5,41 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:jbby"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="转换" WindowStartupLocation="CenterScreen" Cursor="Cross" Width="800" Height="450">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="245*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="50*"/>
+            <ColumnDefinition Width="190*"/>
             <ColumnDefinition Width="152*"/>
         </Grid.ColumnDefinitions>
-        <GroupBox Header="GroupBox" HorizontalAlignment="Left" Height="400" Margin="10,10,0,0" VerticalAlignment="Top" Width="150">
+        <GroupBox Header="操作控制" HorizontalAlignment="Left" Height="400" Margin="0,10,0,0" VerticalAlignment="Top" Width="150" Grid.ColumnSpan="2" Grid.Column="1">
             <Grid HorizontalAlignment="Left" Height="375" VerticalAlignment="Top" Width="130">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="33*"/>
                     <RowDefinition Height="92*"/>
                 </Grid.RowDefinitions>
-                <Button Content="Button" HorizontalAlignment="Left" Margin="29,247.6,0,0" VerticalAlignment="Top" Width="75" Grid.Row="1"/>
-                <Button Content="Button" HorizontalAlignment="Left" Margin="29,224.6,0,0" VerticalAlignment="Top" Width="75" Grid.Row="1"/>
-                <Button Content="Button" HorizontalAlignment="Left" Margin="29,201.6,0,0" VerticalAlignment="Top" Width="75" Grid.Row="1"/>
+                <Button Content="生成" HorizontalAlignment="Center" Margin="10,249.8,10,5.2" VerticalAlignment="Center" Width="110" Grid.Row="1" Height="21" Click="Button_Click_1"/>
+                <Button Content="重置" Margin="10,224.8,10,31.2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="110" Height="20" Click="Button_Click_3"/>
+                <Button Content="选择文件" Margin="10,199.8,10,0" VerticalAlignment="Top" Grid.Row="1" Height="20" Width="110" Click="Button_Click_2"/>
                 <TreeView Margin="0,0,10,191.2" Grid.RowSpan="2" HorizontalAlignment="Right" Width="110" Height="174" VerticalAlignment="Bottom">
-                    <Button Background="#FFE57272" Content="添加"/>
-                    <Button Content="编辑"/>
-                    <Button Content="删除"/>
-                    <Button Content="应用"/>
+                    <Button Background="#FFE57272" Content="添加" Height="24" Width="78" Margin="0,12,0,0" Click="Button_Click_4"/>
+                    <Button Content="编辑" Width="78" Height="24" Margin="0,12,0,0" Click="Button_Click_6"/>
+                    <Button Content="删除" Width="78" Height="24" Margin="0,12,0,0" Click="Button_Click_7"/>
+                    <Button Content="应用" Width="78" Height="24" Margin="0,12,0,0" Click="Button_Click_5"/>
                 </TreeView>
-                <Label Content="Label" HorizontalAlignment="Left" Margin="10,109.8,0,0" Grid.Row="1" VerticalAlignment="Top" Height="25" Width="94"/>
-                <Label Content="Label" HorizontalAlignment="Left" Margin="10,139.8,0,0" Grid.Row="1" VerticalAlignment="Top" Height="25" Width="94"/>
+                <Label Content="文件大小：" HorizontalAlignment="Left" Margin="10,109.8,0,0" Grid.Row="1" VerticalAlignment="Top" Height="25" Width="94"/>
+                <Label Content="文件类型：" HorizontalAlignment="Left" Margin="10,139.8,0,0" Grid.Row="1" VerticalAlignment="Top" Height="25" Width="94"/>
             </Grid>
 
         </GroupBox>
-        <GroupBox Header="GroupBox" HorizontalAlignment="Left" Height="185" Margin="190,225,0,0" VerticalAlignment="Top" Width="275">
-            <TextBox Height="150" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" HorizontalAlignment="Left" Width="235"/>
+        <GroupBox Header="文件内容" HorizontalAlignment="Left" Height="185" Margin="80.4,225,0,0" VerticalAlignment="Top" Width="275" Grid.Column="2">
+            <TextBox Height="150" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" HorizontalAlignment="Left" Width="235" TextChanged="TextBox_TextChanged"/>
         </GroupBox>
-        <GroupBox Header="GroupBox" HorizontalAlignment="Left" Height="185" Margin="470,225,0,0" VerticalAlignment="Top" Width="314" Grid.ColumnSpan="2">
-            <TextBox Height="149" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" HorizontalAlignment="Left" Width="286"/>
+        <GroupBox Header="生成内容" HorizontalAlignment="Left" Height="185" Margin="360.4,225,0,0" VerticalAlignment="Top" Width="314" Grid.ColumnSpan="2" Grid.Column="2">
+            <TextBox Height="149" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" HorizontalAlignment="Left" Width="286" TextChanged="TextBox_TextChanged_1"/>
         </GroupBox>
-        <DataGrid HorizontalAlignment="Left" Height="210" Margin="190,0,0,200" VerticalAlignment="Bottom" Width="594" Grid.ColumnSpan="2" SelectionChanged="DataGrid_SelectionChanged">
+        <DataGrid Height="210" Margin="80.4,0,0,0" Width="594" Grid.ColumnSpan="2" SelectionChanged="DataGrid_SelectionChanged" VerticalAlignment="Top" HorizontalAlignment="Left" HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsReadOnly="True" Grid.Column="2">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="开始符号"/>
                 <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="结束符号"/>
