@@ -28,16 +28,18 @@
                     <Button Content="删除" Width="78" Height="24" Margin="0,12,0,0" Click="Button_Click_7"/>
                     <Button Content="应用" Width="78" Height="24" Margin="0,12,0,0" Click="Button_Click_5"/>
                 </TreeView>
-                <Label Content="文件大小：" HorizontalAlignment="Left" Margin="10,109.8,0,0" Grid.Row="1" VerticalAlignment="Top" Height="25" Width="94"/>
-                <Label Content="文件类型：" HorizontalAlignment="Left" Margin="10,139.8,0,0" Grid.Row="1" VerticalAlignment="Top" Height="25" Width="94"/>
+                <Label Content="文件大小：" HorizontalAlignment="Left" Margin="10,90,0,0" Grid.Row="1" VerticalAlignment="Top" Height="25" Width="94"/>
+                <Label Content="文件类型：" HorizontalAlignment="Left" Margin="10,143,0,0" Grid.Row="1" VerticalAlignment="Top" Height="25" Width="94"/>
+                <Label x:Name="wjdx" Content="" HorizontalAlignment="Left" Margin="10,118,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+                <Label x:Name="wjlx" Content="" HorizontalAlignment="Left" Margin="10,168,0,0" Grid.Row="1" VerticalAlignment="Top"/>
             </Grid>
 
         </GroupBox>
         <GroupBox Header="文件内容" HorizontalAlignment="Left" Height="185" Margin="80.4,225,0,0" VerticalAlignment="Top" Width="275" Grid.Column="2">
-            <TextBox Height="150" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" HorizontalAlignment="Left" Width="235" TextChanged="TextBox_TextChanged"/>
+            <TextBox Height="150" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="235" TextChanged="TextBox_TextChanged"/>
         </GroupBox>
         <GroupBox Header="生成内容" HorizontalAlignment="Left" Height="185" Margin="360.4,225,0,0" VerticalAlignment="Top" Width="314" Grid.ColumnSpan="2" Grid.Column="2">
-            <TextBox Height="149" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" HorizontalAlignment="Left" Width="286" TextChanged="TextBox_TextChanged_1"/>
+            <TextBox Height="149" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="286" TextChanged="TextBox_TextChanged_1"/>
         </GroupBox>
         <DataGrid Height="210" Margin="80.4,0,0,0" Width="594" Grid.ColumnSpan="2" SelectionChanged="DataGrid_SelectionChanged" VerticalAlignment="Top" HorizontalAlignment="Left" HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsReadOnly="True" Grid.Column="2">
             <DataGrid.Columns>
