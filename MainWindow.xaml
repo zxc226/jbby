@@ -36,17 +36,18 @@
 
         </GroupBox>
         <GroupBox Header="文件内容" HorizontalAlignment="Left" Height="185" Margin="80.4,225,0,0" VerticalAlignment="Top" Width="275" Grid.Column="2">
-            <TextBox Height="150" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="235" TextChanged="TextBox_TextChanged"/>
+            <TextBox x:Name="FileNR" Height="150" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="235" TextChanged="TextBox_TextChanged" SnapsToDevicePixels="True"/>
         </GroupBox>
         <GroupBox Header="生成内容" HorizontalAlignment="Left" Height="185" Margin="360.4,225,0,0" VerticalAlignment="Top" Width="314" Grid.ColumnSpan="2" Grid.Column="2">
-            <TextBox Height="149" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="286" TextChanged="TextBox_TextChanged_1"/>
+            <TextBox x:Name="FileSC" Height="149" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="286" TextChanged="TextBox_TextChanged_1"/>
         </GroupBox>
-        <DataGrid Height="210" Margin="80.4,0,0,0" Width="594" Grid.ColumnSpan="2" SelectionChanged="DataGrid_SelectionChanged" VerticalAlignment="Top" HorizontalAlignment="Left" HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsReadOnly="True" Grid.Column="2">
+        <DataGrid Height="210" Margin="80.4,0,0,0" Width="594" Grid.ColumnSpan="2" SelectionChanged="DataGrid_SelectionChanged" VerticalAlignment="Top" HorizontalAlignment="Left" HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsReadOnly="True" Grid.Column="2" IsSynchronizedWithCurrentItem="True" SelectionMode="Single">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="开始符号"/>
                 <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="结束符号"/>
                 <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="类型"/>
                 <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="字体颜色"/>
+                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="角色名称"/>
             </DataGrid.Columns>
         </DataGrid>
 

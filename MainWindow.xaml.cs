@@ -13,7 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
-
+using NPOI.XWPF;
+using NPOI.XWPF.UserModel;
 
 namespace jbby
 {
@@ -61,21 +62,51 @@ namespace jbby
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             //创建＂打开文件＂对话框
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-            //设置文件类型过滤
-            dlg.Filter = "Word文档|*.docx|Word文档（95~2007）|*.doc|文本文档|*.txt;";
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                //设置文件类型过滤
+                Filter = "Word文档|*.docx|Word文档（95~2007）|*.doc|文本文档|*.txt;"
+            };
             // 调用ShowDialog方法显示＂打开文件＂对话框
             Nullable<bool> result = dlg.ShowDialog();
+            string filename = "";
+            string text = "";
+            string wjlxx = "";
             if (result == true)
             {
                 //获取所选文件名并在FileNameTextBox中显示完整路径
-                string filename = dlg.FileName;
+                filename = dlg.FileName;
                 wjdx.Content = dlg.OpenFile().Length;
                 int staerindex = dlg.SafeFileName.Trim().Length-1;
                 int endindex = dlg.SafeFileName.IndexOf(".");
-                var wjlxx = dlg.SafeFileName.Substring(endindex, staerindex);
+                wjlxx = dlg.SafeFileName.Substring(endindex, staerindex-1);
                 wjlx.Content = wjlxx;
             }
+
+            switch (wjlxx)
+            {
+                case ".docx":
+                    
+                    break;
+                case ".doc":
+                    Stream wordFile = File.OpenRead(filename);
+                    XWPFDocument doc = new XWPFDocument(wordFile);
+                    foreach (var para in doc.Paragraphs)
+                    {
+                        text = para.ParagraphText; //获得文本
+                        if (text.Trim() != "")
+                            FileNR.Text = text;
+                    }
+                    break;
+                case ".txt":
+                    text = File.ReadAllText(filename);
+                    FileNR.Text = text;
+                    break;
+                default:
+                    break;
+            }
+            
+            
         }
         /// <summary>
         /// 重置
