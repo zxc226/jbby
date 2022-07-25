@@ -15,6 +15,14 @@ using System.Windows.Shapes;
 using System.IO;
 using NPOI.XWPF;
 using NPOI.XWPF.UserModel;
+using NPOI.Util;
+using System.Windows.Forms;
+using MessageBox = System.Windows.Forms.MessageBox;
+using System.Windows.Xps.Packaging;
+using Path = System.IO.Path;
+using Microsoft.Office.Interop.Word;
+using Window = System.Windows.Window;
+
 
 namespace jbby
 {
@@ -77,26 +85,37 @@ namespace jbby
                 //获取所选文件名并在FileNameTextBox中显示完整路径
                 filename = dlg.FileName;
                 wjdx.Content = dlg.OpenFile().Length;
-                int staerindex = dlg.SafeFileName.Trim().Length-1;
-                int endindex = dlg.SafeFileName.IndexOf(".");
-                wjlxx = dlg.SafeFileName.Substring(endindex, staerindex-1);
+                //int staerindex = dlg.SafeFileName.Trim().Length-1;
+                int endindex = dlg.SafeFileName.Trim().IndexOf(".");
+                wjlxx = dlg.SafeFileName.Substring(endindex);
                 wjlx.Content = wjlxx;
             }
 
             switch (wjlxx)
             {
                 case ".docx":
-                    
+                    try
+                    {
+                        
+                        FileNR.Text = OpenWord(filename);
+                    }
+                    catch
+                    {
+                        MessageBox.Show(string.Format("文件{0}打开失败，错误：{1}", new string[] { filename, e.ToString() }));
+                    }
+
                     break;
                 case ".doc":
-                    Stream wordFile = File.OpenRead(filename);
-                    XWPFDocument doc = new XWPFDocument(wordFile);
-                    foreach (var para in doc.Paragraphs)
+                    try
                     {
-                        text = para.ParagraphText; //获得文本
-                        if (text.Trim() != "")
-                            FileNR.Text = text;
+
+                        FileNR.Text = OpenWord(filename);
                     }
+                    catch
+                    {
+                        MessageBox.Show(string.Format("文件{0}打开失败，错误：{1}", new string[] { filename, e.ToString() }));
+                    }
+
                     break;
                 case ".txt":
                     text = File.ReadAllText(filename);
@@ -115,7 +134,9 @@ namespace jbby
         /// <param name="e"></param>
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-
+            FileNR.Text = "";
+            FileSC.Text = "";
+            //Settinges.Columns.Clear();
         }
         /// <summary>
         /// 添加
@@ -124,16 +145,21 @@ namespace jbby
         /// <param name="e"></param>
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
+            this.Settinges.CanUserAddRows = true;//显示新行
+
 
         }
-       /// <summary>
-       /// 应用设置
-       /// </summary>
-       /// <param name="sender"></param>
-       /// <param name="e"></param>
+        /// <summary>
+        /// 应用设置
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
-
+           var data= Settinges.Columns.AsQueryable();
+            Setting setting = new Setting();
+            //var date=Sett
+            //setting.EndFH=
         }
        /// <summary>
        /// 编辑设置
@@ -142,7 +168,8 @@ namespace jbby
        /// <param name="e"></param>
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
-
+            Settinges.Columns.RemoveAt(Settinges.SelectedIndex);
+            Settinges.Columns.Add(Settinges.Columns.FirstOrDefault());
         }
        /// <summary>
        /// 删除
@@ -151,7 +178,13 @@ namespace jbby
        /// <param name="e"></param>
         private void Button_Click_7(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("是否删除？", "提示", MessageBoxButton.OKCancel, MessageBoxImage.Question);
+            var ss = MessageBox.Show("是否删除？", "提示", (MessageBoxButtons)MessageBoxButton.OKCancel, (MessageBoxIcon)MessageBoxImage.Question);
+            if (ss == System.Windows.Forms.DialogResult.OK)
+            {
+                Settinges.Columns.Remove(Settinges.Columns.First());
+            }
+            
+
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -172,5 +205,52 @@ namespace jbby
         {
 
         }
+
+        public string OpenWord(string fileName)
+        {
+            Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();//可以打开word
+            Microsoft.Office.Interop.Word.Document doc = null;      //需要记录打开的word
+
+            object missing = System.Reflection.Missing.Value;
+            object File = fileName;
+            object readOnly = false;//不是只读
+            object isVisible = true;
+
+            object unknow = Type.Missing;
+
+            try
+            {
+                doc = app.Documents.Open(ref File, ref missing, ref readOnly,
+                 ref missing, ref missing, ref missing, ref missing, ref missing,
+                 ref missing, ref missing, ref missing, ref isVisible, ref missing,
+                 ref missing, ref missing, ref missing);
+
+                doc.ActiveWindow.Selection.WholeStory();//全选word文档中的数据
+                doc.ActiveWindow.Selection.Copy();//复制数据到剪切板
+                return doc.ActiveWindow.Selection.Text;//richTextBox粘贴数据
+                                    //richTextBox1.Text = doc.Content.Text;//显示无格式数据
+            }
+            finally
+            {
+                if (doc != null)
+                {
+                    doc.Close(ref missing, ref missing, ref missing);
+                    doc = null;
+                }
+
+                if (app != null)
+                {
+                    app.Quit(ref missing, ref missing, ref missing);
+                    app = null;
+                }
+            }
+        }
+
+
+
+
+
+
+
     }
 }
