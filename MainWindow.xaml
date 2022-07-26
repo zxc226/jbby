@@ -5,8 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:jbby"
         mc:Ignorable="d"
-        Title="转换" WindowStartupLocation="CenterScreen" Cursor="Cross" Width="800" Height="450">
-    <Grid>
+        Title="转换" WindowStartupLocation="CenterScreen" Cursor="Cross" Width="800" Height="480.992">
+    <Window.Resources>
+        <AlternationConverter x:Key="AlternationConverter"/>
+    </Window.Resources>
+    <Grid Margin="0,0,0,-21" Height="460" VerticalAlignment="Top">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*"/>
             <ColumnDefinition Width="50*"/>
@@ -35,21 +38,30 @@
             </Grid>
 
         </GroupBox>
-        <GroupBox x:Name="groupBox1" Header="文件内容" HorizontalAlignment="Left" Height="185" Margin="80.4,225,0,0" VerticalAlignment="Top" Width="275" Grid.Column="2">
-            <TextBox x:Name="FileNR" Height="150" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="235" TextChanged="TextBox_TextChanged" SnapsToDevicePixels="True" VerticalScrollBarVisibility="Visible"/>
+        <GroupBox x:Name="groupBox1" Header="文件内容" HorizontalAlignment="Left" Height="185" Margin="55,225,0,0" VerticalAlignment="Top" Width="286" Grid.Column="2">
+            <TextBox x:Name="FileNR" Height="150" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="255" TextChanged="TextBox_TextChanged" SnapsToDevicePixels="True" VerticalScrollBarVisibility="Visible"/>
         </GroupBox>
-        <GroupBox x:Name="groupBox2" Header="生成内容" HorizontalAlignment="Left" Height="185" Margin="360.4,225,0,0" VerticalAlignment="Top" Width="314" Grid.ColumnSpan="2" Grid.Column="2">
-            <TextBox x:Name="FileSC" Height="149" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="286" TextChanged="TextBox_TextChanged_1" VerticalScrollBarVisibility="Visible"/>
+        <GroupBox x:Name="groupBox2" Header="生成内容" HorizontalAlignment="Left" Height="185" Margin="341,225,0,0" VerticalAlignment="Top" Width="333" Grid.ColumnSpan="2" Grid.Column="2">
+            <TextBox x:Name="FileSC" Height="149" Margin="0,10,6,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Right" Width="305" TextChanged="TextBox_TextChanged_1" VerticalScrollBarVisibility="Visible"/>
         </GroupBox>
-        <DataGrid x:Name="Settinges" Height="210" Margin="80.4,0,0,0" Width="594" Grid.ColumnSpan="2" SelectionChanged="DataGrid_SelectionChanged" VerticalAlignment="Top" HorizontalAlignment="Left" HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsReadOnly="True" Grid.Column="2" IsSynchronizedWithCurrentItem="True" VerticalScrollBarVisibility="Visible">
+        <DataGrid x:Name="Settinges" Height="210" Margin="55,6,10,0" Width="617" Grid.ColumnSpan="2" SelectionChanged="DataGrid_SelectionChanged" HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="2" IsSynchronizedWithCurrentItem="True" VerticalScrollBarVisibility="Visible" AutomationProperties.IsOffscreenBehavior="Offscreen" TextOptions.TextHintingMode="Animated" VerticalAlignment="Top" ColumnHeaderHeight="NaN" ColumnWidth="SizeToHeader" HorizontalAlignment="Center" LoadingRow="Settinges_LoadingRow" KeyDown="Settinges_KeyDown" ToolTip="{DynamicResource {x:Static SystemParameters.ToolTipFadeKey}}" Loaded="Settinges_Loaded_1" IsReadOnly="True" InputScope="{Binding DataContext, ElementName=Settinges}">
+            <DataGrid.ItemBindingGroup>
+                <BindingGroup/>
+            </DataGrid.ItemBindingGroup>
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn x:Name="dataGridTextColumn" Header="开始符号" Binding="{Binding DataContext, ElementName=groupBox}"/>
-                <DataGridTextColumn Binding="{Binding DataContext, ElementName=groupBox1}" ClipboardContentBinding="{x:Null}" Header="结束符号"/>
-                <DataGridTextColumn Binding="{Binding Content, ElementName=groupBox2}" ClipboardContentBinding="{x:Null}" Header="类型"/>
-                <DataGridTextColumn x:Name="dataGridTextColumn1" Binding="{Binding ElementName=dataGridTextColumn, Mode=OneWay}" ClipboardContentBinding="{x:Null}" Header="字体颜色"/>
-                <DataGridTextColumn Binding="{Binding ElementName=dataGridTextColumn1, Mode=OneWay}" ClipboardContentBinding="{x:Null}" Header="角色名称"/>
+                <DataGridTextColumn x:Name="dataGridTextColumn" Header="开始符号" Width="*" Binding="{Binding IsReadOnly, ElementName=dataGridTextColumn}"/>
+                <DataGridTextColumn x:Name="dataGridTextColumn4" Binding="{Binding IsReadOnly, ElementName=dataGridTextColumn1}" ClipboardContentBinding="{x:Null}" Header="结束符号" SortMemberPath="" Width="*"/>
+                <DataGridTextColumn x:Name="dataGridTextColumn3" Binding="{Binding IsReadOnly, ElementName=dataGridTextColumn2}" Header="类型" Width="*"/>
+                <DataGridTextColumn x:Name="dataGridTextColumn1" ClipboardContentBinding="{x:Null}" Header="字体颜色" Width="*" Binding="{Binding IsReadOnly, ElementName=dataGridTextColumn3}"/>
+                <DataGridTextColumn x:Name="dataGridTextColumn2" Binding="{Binding IsReadOnly, ElementName=dataGridTextColumn4}" Header="角色名称" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
+        <ProgressBar Grid.ColumnSpan="2" Grid.Column="1" HorizontalAlignment="Left" Height="10" Margin="10,426,0,0" VerticalAlignment="Top" Width="140"/>
 
     </Grid>
 </Window>

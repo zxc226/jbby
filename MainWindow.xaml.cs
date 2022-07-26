@@ -31,6 +31,8 @@ namespace jbby
     /// </summary>
     public partial class MainWindow : Window
     {
+        List<Setting> settings = new List<Setting>();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -96,7 +98,7 @@ namespace jbby
                 case ".docx":
                     try
                     {
-                        
+
                         FileNR.Text = OpenWord(filename);
                     }
                     catch
@@ -124,8 +126,8 @@ namespace jbby
                 default:
                     break;
             }
-            
-            
+
+
         }
         /// <summary>
         /// 重置
@@ -145,7 +147,7 @@ namespace jbby
         /// <param name="e"></param>
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
-            this.Settinges.CanUserAddRows = true;//显示新行
+            Settinges.Items.Add(new Setting());
 
 
         }
@@ -156,34 +158,32 @@ namespace jbby
         /// <param name="e"></param>
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
-           var data= Settinges.Columns.AsQueryable();
+            var data = Settinges.SelectedItem;
             Setting setting = new Setting();
-            //var date=Sett
-            //setting.EndFH=
+            MessageBox.Show(data.ToString()); ;
         }
-       /// <summary>
-       /// 编辑设置
-       /// </summary>
-       /// <param name="sender"></param>
-       /// <param name="e"></param>
+        /// <summary>
+        /// 编辑设置
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
-            Settinges.Columns.RemoveAt(Settinges.SelectedIndex);
-            Settinges.Columns.Add(Settinges.Columns.FirstOrDefault());
+            Settinges.IsReadOnly = false;
         }
-       /// <summary>
-       /// 删除
-       /// </summary>
-       /// <param name="sender"></param>
-       /// <param name="e"></param>
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click_7(object sender, RoutedEventArgs e)
         {
             var ss = MessageBox.Show("是否删除？", "提示", (MessageBoxButtons)MessageBoxButton.OKCancel, (MessageBoxIcon)MessageBoxImage.Question);
             if (ss == System.Windows.Forms.DialogResult.OK)
             {
-                Settinges.Columns.Remove(Settinges.Columns.First());
+                Settinges.Items.RemoveAt(Settinges.SelectedIndex);
             }
-            
+
 
         }
 
@@ -228,7 +228,7 @@ namespace jbby
                 doc.ActiveWindow.Selection.WholeStory();//全选word文档中的数据
                 doc.ActiveWindow.Selection.Copy();//复制数据到剪切板
                 return doc.ActiveWindow.Selection.Text;//richTextBox粘贴数据
-                                    //richTextBox1.Text = doc.Content.Text;//显示无格式数据
+                                                       //richTextBox1.Text = doc.Content.Text;//显示无格式数据
             }
             finally
             {
@@ -246,11 +246,24 @@ namespace jbby
             }
         }
 
+        private void Settinges_LoadingRow(object sender, DataGridRowEventArgs e)
+        {
+            e.Row.Header = e.Row.GetIndex() + 1;
+        }
 
+        private void Settinges_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            var uie = e.OriginalSource as UIElement;
+            if (e.Key == Key.Enter)
+            {
+                uie.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+                e.Handled = true;
+            }
+        }
 
-
-
-
-
+        private void Settinges_Loaded_1(object sender, RoutedEventArgs e)
+        {
+            Settinges.DataContext = settings;
+        }
     }
 }
