@@ -22,14 +22,14 @@
                     <RowDefinition Height="33*"/>
                     <RowDefinition Height="92*"/>
                 </Grid.RowDefinitions>
-                <Button Content="生成" HorizontalAlignment="Center" Margin="10,0,10,5.2" VerticalAlignment="Bottom" Width="110" Grid.Row="1" Height="21" Click="Button_Click_1"/>
-                <Button Content="重置" Margin="10,224.8,10,31.2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="110" Height="20" Click="Button_Click_3"/>
+                <Button Content="生成" HorizontalAlignment="Center" Margin="10,0,10,5.2" VerticalAlignment="Bottom" Width="110" Grid.Row="1" Height="21" Click="Button_Click_1" Background="#FF8DD667"/>
+                <Button Content="重置" Margin="10,224.8,10,31.2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="110" Height="20" Click="Button_Click_3" Background="#FFE888E5"/>
                 <Button Content="选择文件" Margin="10,199.8,10,0" VerticalAlignment="Top" Grid.Row="1" Height="20" Width="110" Click="Button_Click_2"/>
                 <TreeView Margin="0,0,10,191.2" Grid.RowSpan="2" HorizontalAlignment="Right" Width="110" Height="174" VerticalAlignment="Bottom">
                     <Button Background="#FFE57272" Content="添加" Height="24" Width="78" Margin="0,12,0,0" Click="Button_Click_4"/>
-                    <Button Content="编辑" Width="78" Height="24" Margin="0,12,0,0" Click="Button_Click_6"/>
-                    <Button Content="删除" Width="78" Height="24" Margin="0,12,0,0" Click="Button_Click_7"/>
-                    <Button Content="应用" Width="78" Height="24" Margin="0,12,0,0" Click="Button_Click_5"/>
+                    <Button x:Name="sd" Content="锁定" Width="78" Height="24" Margin="0,12,0,0" Click="Button_Click_6" Background="#FFF7F19E"/>
+                    <Button Content="删除" Width="78" Height="24" Margin="0,12,0,0" Click="Button_Click_7" Background="#FFF6B44E"/>
+                    <Button Content="应用" Width="78" Height="24" Margin="0,12,0,0" Click="Button_Click_5" Background="#FFA1FFEC"/>
                 </TreeView>
                 <Label Content="文件大小：" HorizontalAlignment="Left" Margin="10,90,0,0" Grid.Row="1" VerticalAlignment="Top" Height="25" Width="94"/>
                 <Label Content="文件类型：" HorizontalAlignment="Left" Margin="10,143,0,0" Grid.Row="1" VerticalAlignment="Top" Height="25" Width="94"/>
@@ -38,13 +38,13 @@
             </Grid>
 
         </GroupBox>
-        <GroupBox x:Name="groupBox1" Header="文件内容" HorizontalAlignment="Left" Height="185" Margin="55,225,0,0" VerticalAlignment="Top" Width="286" Grid.Column="2">
-            <TextBox x:Name="FileNR" Height="150" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="255" TextChanged="TextBox_TextChanged" SnapsToDevicePixels="True" VerticalScrollBarVisibility="Visible"/>
+        <GroupBox x:Name="groupBox1" Header="文件内容" HorizontalAlignment="Left" Height="185" Margin="55.4,225,0,0" VerticalAlignment="Top" Width="310" Grid.Column="2">
+            <TextBox x:Name="FileNR" Height="150" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="285" TextChanged="TextBox_TextChanged" SnapsToDevicePixels="True" VerticalScrollBarVisibility="Visible" Background="#FFFFC1C1"/>
         </GroupBox>
-        <GroupBox x:Name="groupBox2" Header="生成内容" HorizontalAlignment="Left" Height="185" Margin="341,225,0,0" VerticalAlignment="Top" Width="333" Grid.ColumnSpan="2" Grid.Column="2">
-            <TextBox x:Name="FileSC" Height="149" Margin="0,10,6,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Right" Width="305" TextChanged="TextBox_TextChanged_1" VerticalScrollBarVisibility="Visible"/>
+        <GroupBox x:Name="groupBox2" Header="生成内容" HorizontalAlignment="Left" Height="185" Margin="370.4,225,0,0" VerticalAlignment="Top" Width="304" Grid.ColumnSpan="2" Grid.Column="2">
+            <TextBox x:Name="FileSC" Height="149" Margin="0,10,5.8,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Right" Width="280" TextChanged="TextBox_TextChanged_1" VerticalScrollBarVisibility="Visible" Background="#FFE2F9BA"/>
         </GroupBox>
-        <DataGrid x:Name="Settinges" Height="210" Margin="55,6,10,0" Width="617" Grid.ColumnSpan="2" SelectionChanged="DataGrid_SelectionChanged" HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="2" IsSynchronizedWithCurrentItem="True" VerticalScrollBarVisibility="Visible" AutomationProperties.IsOffscreenBehavior="Offscreen" TextOptions.TextHintingMode="Animated" VerticalAlignment="Top" ColumnHeaderHeight="NaN" ColumnWidth="SizeToHeader" HorizontalAlignment="Center" LoadingRow="Settinges_LoadingRow" KeyDown="Settinges_KeyDown" ToolTip="{DynamicResource {x:Static SystemParameters.ToolTipFadeKey}}" Loaded="Settinges_Loaded_1" IsReadOnly="True" InputScope="{Binding DataContext, ElementName=Settinges}">
+        <DataGrid x:Name="Settinges" Height="210" Margin="55,6,10,0" Width="617" Grid.ColumnSpan="2" SelectionChanged="DataGrid_SelectionChanged" HorizontalScrollBarVisibility="Disabled" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="2" IsSynchronizedWithCurrentItem="True" VerticalScrollBarVisibility="Visible" AutomationProperties.IsOffscreenBehavior="Offscreen" TextOptions.TextHintingMode="Animated" VerticalAlignment="Top" ColumnHeaderHeight="NaN" ColumnWidth="SizeToHeader" HorizontalAlignment="Center" LoadingRow="Settinges_LoadingRow" KeyDown="Settinges_KeyDown" ToolTip="{DynamicResource {x:Static SystemParameters.ToolTipFadeKey}}" Loaded="Settinges_Loaded_1" InputScope="{Binding DataContext, ElementName=Settinges}" ItemsSource="{Binding Mode=OneWay}" CanUserReorderColumns="False" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="True" AreRowDetailsFrozen="True" CanUserAddRows="False" AutoGenerateColumns="False" Background="#FFFFE7FE">
             <DataGrid.ItemBindingGroup>
                 <BindingGroup/>
             </DataGrid.ItemBindingGroup>
@@ -54,14 +54,14 @@
                 </Style>
             </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn x:Name="dataGridTextColumn" Header="开始符号" Width="*" Binding="{Binding IsReadOnly, ElementName=dataGridTextColumn}"/>
-                <DataGridTextColumn x:Name="dataGridTextColumn4" Binding="{Binding IsReadOnly, ElementName=dataGridTextColumn1}" ClipboardContentBinding="{x:Null}" Header="结束符号" SortMemberPath="" Width="*"/>
-                <DataGridTextColumn x:Name="dataGridTextColumn3" Binding="{Binding IsReadOnly, ElementName=dataGridTextColumn2}" Header="类型" Width="*"/>
-                <DataGridTextColumn x:Name="dataGridTextColumn1" ClipboardContentBinding="{x:Null}" Header="字体颜色" Width="*" Binding="{Binding IsReadOnly, ElementName=dataGridTextColumn3}"/>
-                <DataGridTextColumn x:Name="dataGridTextColumn2" Binding="{Binding IsReadOnly, ElementName=dataGridTextColumn4}" Header="角色名称" Width="*"/>
+                <DataGridTextColumn x:Name="dataGridTextColumn" Header="开始符号" Width="*" Binding="{Binding StaerFH}"/>
+                <DataGridTextColumn x:Name="dataGridTextColumn4" Binding="{Binding EndFH}" ClipboardContentBinding="{x:Null}" Header="结束符号" SortMemberPath="" Width="*"/>
+                <DataGridTextColumn x:Name="dataGridTextColumn3" Binding="{Binding Type}" Header="类型" Width="*"/>
+                <DataGridTextColumn x:Name="dataGridTextColumn1" ClipboardContentBinding="{x:Null}" Header="字体颜色" Width="*" Binding="{Binding ZTColore}"/>
+                <DataGridTextColumn x:Name="dataGridTextColumn2" Binding="{Binding JSName}" Header="角色名称" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
-        <ProgressBar Grid.ColumnSpan="2" Grid.Column="1" HorizontalAlignment="Left" Height="10" Margin="10,426,0,0" VerticalAlignment="Top" Width="140"/>
+        <ProgressBar x:Name="jdt" Grid.ColumnSpan="2" Grid.Column="1" HorizontalAlignment="Left" Height="10" Margin="5.4,0,0,0" VerticalAlignment="Top" Width="140" Loaded="jdt_Loaded" ValueChanged="jdt_ValueChanged"/>
 
     </Grid>
 </Window>

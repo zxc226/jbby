@@ -22,7 +22,8 @@ using System.Windows.Xps.Packaging;
 using Path = System.IO.Path;
 using Microsoft.Office.Interop.Word;
 using Window = System.Windows.Window;
-
+using System.Threading;
+using System.Collections.ObjectModel;
 
 namespace jbby
 {
@@ -31,7 +32,8 @@ namespace jbby
     /// </summary>
     public partial class MainWindow : Window
     {
-        List<Setting> settings = new List<Setting>();
+        ObservableCollection<Setting> settings = new ObservableCollection<Setting>();
+        static int num = 0;
 
         public MainWindow()
         {
@@ -69,8 +71,9 @@ namespace jbby
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
+            jdt.Value = 50;
             //创建＂打开文件＂对话框
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog
             {
@@ -92,14 +95,15 @@ namespace jbby
                 wjlxx = dlg.SafeFileName.Substring(endindex);
                 wjlx.Content = wjlxx;
             }
-
             switch (wjlxx)
             {
                 case ".docx":
                     try
                     {
-
-                        FileNR.Text = OpenWord(filename);
+                        Thread thread = new Thread(() =>  OpenWord(filename));
+                        thread.Start();
+                        FileNR.Text = await OpenWord(filename);
+                        jdt.Value = 100;
                     }
                     catch
                     {
@@ -111,7 +115,7 @@ namespace jbby
                     try
                     {
 
-                        FileNR.Text = OpenWord(filename);
+                        FileNR.Text = await OpenWord(filename);
                     }
                     catch
                     {
@@ -138,6 +142,9 @@ namespace jbby
         {
             FileNR.Text = "";
             FileSC.Text = "";
+            jdt.Value = 0;
+            wjdx.Content = "";
+            wjlx.Content = "";
             //Settinges.Columns.Clear();
         }
         /// <summary>
@@ -147,9 +154,8 @@ namespace jbby
         /// <param name="e"></param>
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
-            Settinges.Items.Add(new Setting());
-
-
+            
+            settings.Add(new Setting());
         }
         /// <summary>
         /// 应用设置
@@ -169,7 +175,18 @@ namespace jbby
         /// <param name="e"></param>
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
-            Settinges.IsReadOnly = false;
+           
+            Settinges.IsReadOnly = true;
+            ++num;
+            if (num%2==0)
+            {
+                Settinges.IsReadOnly = false;
+            }
+            else
+            {
+                Settinges.IsReadOnly = true;
+            }
+
         }
         /// <summary>
         /// 删除
@@ -181,7 +198,15 @@ namespace jbby
             var ss = MessageBox.Show("是否删除？", "提示", (MessageBoxButtons)MessageBoxButton.OKCancel, (MessageBoxIcon)MessageBoxImage.Question);
             if (ss == System.Windows.Forms.DialogResult.OK)
             {
-                Settinges.Items.RemoveAt(Settinges.SelectedIndex);
+                if (Settinges.SelectedIndex<0)
+                {
+                    MessageBox.Show("请选择要删除的数据！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+                else
+                {
+                    settings.RemoveAt(Settinges.SelectedIndex);
+                }
+                
             }
 
 
@@ -206,7 +231,7 @@ namespace jbby
 
         }
 
-        public string OpenWord(string fileName)
+        public static Task<string> OpenWord(string fileName)
         {
             Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();//可以打开word
             Microsoft.Office.Interop.Word.Document doc = null;      //需要记录打开的word
@@ -227,7 +252,11 @@ namespace jbby
 
                 doc.ActiveWindow.Selection.WholeStory();//全选word文档中的数据
                 doc.ActiveWindow.Selection.Copy();//复制数据到剪切板
-                return doc.ActiveWindow.Selection.Text;//richTextBox粘贴数据
+                var textes = doc.ActiveWindow.Selection.Text;
+                return System.Threading.Tasks.Task.Run(() =>
+                {
+                    return textes;
+                });//richTextBox粘贴数据
                                                        //richTextBox1.Text = doc.Content.Text;//显示无格式数据
             }
             finally
@@ -263,7 +292,20 @@ namespace jbby
 
         private void Settinges_Loaded_1(object sender, RoutedEventArgs e)
         {
-            Settinges.DataContext = settings;
+            settings.Add(new Setting());
+            Settinges.ItemsSource = settings;
+        }
+
+        private void jdt_Loaded(object sender, RoutedEventArgs e)
+        {
+            jdt.Minimum = 0;
+            jdt.Maximum = 100;
+
+        }
+
+        private void jdt_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
         }
     }
 }
