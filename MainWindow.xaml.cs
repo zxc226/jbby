@@ -95,6 +95,10 @@ namespace jbby
                 wjlxx = dlg.SafeFileName.Substring(endindex);
                 wjlx.Content = wjlxx;
             }
+            else
+            {
+                jdt.Value = 0;
+            }
             switch (wjlxx)
             {
                 case ".docx":
@@ -114,8 +118,10 @@ namespace jbby
                 case ".doc":
                     try
                     {
-
+                        Thread thread = new Thread(() => OpenWord(filename));
+                        thread.Start();
                         FileNR.Text = await OpenWord(filename);
+                        jdt.Value = 100;
                     }
                     catch
                     {
@@ -126,6 +132,7 @@ namespace jbby
                 case ".txt":
                     text = File.ReadAllText(filename);
                     FileNR.Text = text;
+                    jdt.Value = 100;
                     break;
                 default:
                     break;
