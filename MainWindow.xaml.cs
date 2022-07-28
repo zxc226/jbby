@@ -34,6 +34,7 @@ namespace jbby
     {
         ObservableCollection<Setting> settings = new ObservableCollection<Setting>();
         static int num = 0;
+        public string filename = "";
 
         public MainWindow()
         {
@@ -82,7 +83,7 @@ namespace jbby
             };
             // 调用ShowDialog方法显示＂打开文件＂对话框
             Nullable<bool> result = dlg.ShowDialog();
-            string filename = "";
+           
             string text = "";
             string wjlxx = "";
             if (result == true)
@@ -171,9 +172,18 @@ namespace jbby
         /// <param name="e"></param>
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
-            var data = Settinges.SelectedItem;
-            Setting setting = new Setting();
-            MessageBox.Show(data.ToString()); ;
+            var data = settings.AsQueryable();
+            List<Setting> setting = new List<Setting>();
+            setting = data.ToList();
+            string path = filename;
+            Encoding encoding = UTF8Encoding.UTF8;
+            ReadTxtFileLine ReadTxtFileTest1 = new ReadTxtFileLine(path, encoding);
+            while (ReadTxtFileTest1.IsReadEnd > 0)
+            {
+                string str = ReadTxtFileTest1.GetLineStr();  //这里将读出来的1行赋值给str
+                MessageBox.Show( str,"文件读取内容",MessageBoxButtons.OK);
+            }
+
         }
         /// <summary>
         /// 编辑设置
