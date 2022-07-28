@@ -35,7 +35,7 @@ namespace jbby
         ObservableCollection<Setting> settings = new ObservableCollection<Setting>();
         static int num = 0;
         public string filename = "";
-
+        public string wjlxx = "";
         public MainWindow()
         {
             InitializeComponent();
@@ -85,7 +85,7 @@ namespace jbby
             Nullable<bool> result = dlg.ShowDialog();
            
             string text = "";
-            string wjlxx = "";
+            
             if (result == true)
             {
                 //获取所选文件名并在FileNameTextBox中显示完整路径
@@ -176,6 +176,15 @@ namespace jbby
             List<Setting> setting = new List<Setting>();
             setting = data.ToList();
             string path = filename;
+            if (wjlxx!=".txt"||wjlxx!="txt")
+            {
+                var temp = System.AppDomain.CurrentDomain.BaseDirectory;
+                temp = temp + "temp.txt";
+                FileStream aFile = new FileStream(temp, FileMode.OpenOrCreate);
+                StreamWriter sw = new StreamWriter(aFile);
+                sw.Write(FileNR.Text);
+                sw.Close();
+            }
             Encoding encoding = UTF8Encoding.UTF8;
             ReadTxtFileLine ReadTxtFileTest1 = new ReadTxtFileLine(path, encoding);
             while (ReadTxtFileTest1.IsReadEnd > 0)
