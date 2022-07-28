@@ -36,6 +36,7 @@ namespace jbby
         static int num = 0;
         public string filename = "";
         public string wjlxx = "";
+        public string text = "";
         public MainWindow()
         {
             InitializeComponent();
@@ -83,9 +84,9 @@ namespace jbby
             };
             // 调用ShowDialog方法显示＂打开文件＂对话框
             Nullable<bool> result = dlg.ShowDialog();
+
            
-            string text = "";
-            
+
             if (result == true)
             {
                 //获取所选文件名并在FileNameTextBox中显示完整路径
@@ -105,9 +106,10 @@ namespace jbby
                 case ".docx":
                     try
                     {
-                        Thread thread = new Thread(() =>  OpenWord(filename));
+                        Thread thread = new Thread(() => OpenWord(filename));
                         thread.Start();
-                        FileNR.Text = await OpenWord(filename);
+                        text = await OpenWord(filename);
+                        FileNR.Text = text;
                         jdt.Value = 100;
                     }
                     catch
@@ -121,7 +123,8 @@ namespace jbby
                     {
                         Thread thread = new Thread(() => OpenWord(filename));
                         thread.Start();
-                        FileNR.Text = await OpenWord(filename);
+                        text = await OpenWord(filename);
+                        FileNR.Text = text;
                         jdt.Value = 100;
                     }
                     catch
@@ -162,7 +165,7 @@ namespace jbby
         /// <param name="e"></param>
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
-            
+
             settings.Add(new Setting());
         }
         /// <summary>
@@ -176,22 +179,38 @@ namespace jbby
             List<Setting> setting = new List<Setting>();
             setting = data.ToList();
             string path = filename;
-            if (wjlxx!=".txt"||wjlxx!="txt")
+            if (wjlxx != ".txt" || wjlxx != "txt")
             {
+
                 var temp = System.AppDomain.CurrentDomain.BaseDirectory;
-                temp = temp + "temp.txt";
+                temp = temp + "\\cs\\temp.txt";
+                if (File.Exists(temp))
+                {
+                    File.Delete(temp);
+                }
                 FileStream aFile = new FileStream(temp, FileMode.OpenOrCreate);
                 StreamWriter sw = new StreamWriter(aFile);
-                sw.Write(FileNR.Text);
+                sw.WriteLine(text);
                 sw.Close();
+                Encoding encoding = UTF8Encoding.UTF8;
+                ReadTxtFileLine ReadTxtFileTest1 = new ReadTxtFileLine(temp, encoding);
+                while (ReadTxtFileTest1.IsReadEnd > 0)
+                {
+                    string str = ReadTxtFileTest1.GetLineStr();  //这里将读出来的1行赋值给str
+                    MessageBox.Show(str, "文件读取内容", MessageBoxButtons.OK);
+                }
             }
-            Encoding encoding = UTF8Encoding.UTF8;
-            ReadTxtFileLine ReadTxtFileTest1 = new ReadTxtFileLine(path, encoding);
-            while (ReadTxtFileTest1.IsReadEnd > 0)
+            else
             {
-                string str = ReadTxtFileTest1.GetLineStr();  //这里将读出来的1行赋值给str
-                MessageBox.Show( str,"文件读取内容",MessageBoxButtons.OK);
+                Encoding encoding = UTF8Encoding.UTF8;
+                ReadTxtFileLine ReadTxtFileTest1 = new ReadTxtFileLine(path, encoding);
+                while (ReadTxtFileTest1.IsReadEnd > 0)
+                {
+                    string str = ReadTxtFileTest1.GetLineStr();  //这里将读出来的1行赋值给str
+                    MessageBox.Show(str, "文件读取内容", MessageBoxButtons.OK);
+                }
             }
+
 
         }
         /// <summary>
@@ -201,10 +220,10 @@ namespace jbby
         /// <param name="e"></param>
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
-           
+
             Settinges.IsReadOnly = true;
             ++num;
-            if (num%2==0)
+            if (num % 2 == 0)
             {
                 Settinges.IsReadOnly = false;
             }
@@ -224,7 +243,7 @@ namespace jbby
             var ss = MessageBox.Show("是否删除？", "提示", (MessageBoxButtons)MessageBoxButton.OKCancel, (MessageBoxIcon)MessageBoxImage.Question);
             if (ss == System.Windows.Forms.DialogResult.OK)
             {
-                if (Settinges.SelectedIndex<0)
+                if (Settinges.SelectedIndex < 0)
                 {
                     MessageBox.Show("请选择要删除的数据！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
@@ -232,7 +251,7 @@ namespace jbby
                 {
                     settings.RemoveAt(Settinges.SelectedIndex);
                 }
-                
+
             }
 
 
@@ -283,7 +302,7 @@ namespace jbby
                 {
                     return textes;
                 });//richTextBox粘贴数据
-                                                       //richTextBox1.Text = doc.Content.Text;//显示无格式数据
+                   //richTextBox1.Text = doc.Content.Text;//显示无格式数据
             }
             finally
             {
