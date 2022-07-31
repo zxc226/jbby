@@ -17,22 +17,25 @@ using NPOI.XWPF;
 using NPOI.XWPF.UserModel;
 using NPOI.Util;
 using System.Windows.Forms;
-using MessageBox = System.Windows.Forms.MessageBox;
+using MessageBox = Panuon.WPF.UI.MessageBoxX;
 using System.Windows.Xps.Packaging;
 using Path = System.IO.Path;
 using Microsoft.Office.Interop.Word;
 using Window = System.Windows.Window;
 using System.Threading;
 using System.Collections.ObjectModel;
+using Panuon.WPF.UI;
+using MessageBoxIcon = Panuon.WPF.UI.MessageBoxIcon;
 
 namespace jbby
 {
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : WindowX
     {
         ObservableCollection<Setting> settings = new ObservableCollection<Setting>();
+        List<Setting> scnr = new List<Setting>();
         static int num = 0;
         public string filename = "";
         public string wjlxx = "";
@@ -108,7 +111,11 @@ namespace jbby
                     {
                         Thread thread = new Thread(() => OpenWord(filename));
                         thread.Start();
-                        text = await OpenWord(filename);
+                        var date= await OpenWord(filename);
+                        for (int i = 0; i < date.Count; i++)
+                        {
+                            text += date[i] + "\t\n";
+                        }
                         FileNR.Text = text;
                         jdt.Value = 100;
                     }
@@ -123,7 +130,11 @@ namespace jbby
                     {
                         Thread thread = new Thread(() => OpenWord(filename));
                         thread.Start();
-                        text = await OpenWord(filename);
+                        var date = await OpenWord(filename);
+                        for (int i = 0; i < date.Count; i++)
+                        {
+                            text += date[i] + "\t\n";
+                        }
                         FileNR.Text = text;
                         jdt.Value = 100;
                     }
@@ -165,7 +176,6 @@ namespace jbby
         /// <param name="e"></param>
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
-
             settings.Add(new Setting());
         }
         /// <summary>
@@ -175,40 +185,145 @@ namespace jbby
         /// <param name="e"></param>
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
+            var nrsc = "";
             var data = settings.AsQueryable();
-            List<Setting> setting = new List<Setting>();
-            setting = data.ToList();
+            List<Setting> setting = data.ToList();
+            Setting scnrs = new Setting();
             string path = filename;
             if (wjlxx != ".txt" || wjlxx != "txt")
             {
-
                 var temp = System.AppDomain.CurrentDomain.BaseDirectory;
                 temp = temp + "\\cs\\temp.txt";
                 if (File.Exists(temp))
                 {
                     File.Delete(temp);
+                    FileStream aFile = new FileStream(temp, FileMode.OpenOrCreate);
+                    StreamWriter sw = new StreamWriter(aFile);
+                    sw.WriteLine(text);
+                    sw.Close();
+                    Encoding encoding = UTF8Encoding.UTF8;
+                    ReadTxtFileLine ReadTxtFileTest1 = new ReadTxtFileLine(temp, encoding);
+                    //while (ReadTxtFileTest1.IsReadEnd > 0)
+                    //{
+                    //    string str = ReadTxtFileTest1.GetLineStr();  //这里将读出来的1行赋值给str
+                    //    MessageBox.Show(str, "文件读取内容", (MessageBoxButton)MessageBoxButtons.OK);
+                    //}
+                    while (ReadTxtFileTest1.IsReadEnd > 0)
+                    {
+                        string str = ReadTxtFileTest1.GetLineStr();  //这里将读出来的1行赋值给str
+                        scnrs = JQstring(str);
+                        if (str == "false")
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            scnr.Add(scnrs);
+                        }
+                    }
+
+                    for (int i = 0; i < scnr.Count; i++)
+                    {
+                        try
+                        {
+                            if (scnr[i]==null)
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                nrsc = "Type:" + scnr[i].Type + ",\t\n";
+                                nrsc += "ZTColore:" + scnr[i].ZTColore + ",\t\n";
+                                nrsc += "JSName:" + scnr[i].JSName + ",\t\n";
+                                nrsc += "Nr:"+scnr[i].Nr;
+                                nrsc = "{\t\n" + nrsc + "\t\n}\t\n";
+                            }
+                            
+                        }
+                        catch (Exception ee)
+                        {
+                            Console.WriteLine(ee);
+                            continue;
+                        }
+                        
+                    }
+                    FileSC.Text = nrsc;
                 }
-                FileStream aFile = new FileStream(temp, FileMode.OpenOrCreate);
-                StreamWriter sw = new StreamWriter(aFile);
-                sw.WriteLine(text);
-                sw.Close();
-                Encoding encoding = UTF8Encoding.UTF8;
-                ReadTxtFileLine ReadTxtFileTest1 = new ReadTxtFileLine(temp, encoding);
-                while (ReadTxtFileTest1.IsReadEnd > 0)
+                else
                 {
-                    string str = ReadTxtFileTest1.GetLineStr();  //这里将读出来的1行赋值给str
-                    MessageBox.Show(str, "文件读取内容", MessageBoxButtons.OK);
+                    FileStream aFile = new FileStream(temp, FileMode.OpenOrCreate);
+                    StreamWriter sw = new StreamWriter(aFile);
+                    sw.WriteLine(text);
+                    sw.Close();
+                    Encoding encoding = UTF8Encoding.UTF8;
+                    ReadTxtFileLine ReadTxtFileTest1 = new ReadTxtFileLine(temp, encoding);
+                    //while (ReadTxtFileTest1.IsReadEnd > 0)
+                    //{
+                    //    string str = ReadTxtFileTest1.GetLineStr();  //这里将读出来的1行赋值给str
+                    //    MessageBox.Show(str, "文件读取内容", (MessageBoxButton)MessageBoxButtons.OK);
+                    //}
+                    while (ReadTxtFileTest1.IsReadEnd > 0)
+                    {
+                        string str = ReadTxtFileTest1.GetLineStr();  //这里将读出来的1行赋值给str
+                        scnrs = JQstring(str);
+                        if (str == "false")
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            scnr.Add(scnrs);
+                        }
+                    }
+
+                    for (int i = 0; i < scnr.Count; i++)
+                    {
+                        try
+                        {
+                            nrsc = scnr[i].Type + "\t\n";
+                            nrsc += scnr[i].ZTColore + "\t\n";
+                            nrsc += scnr[i].JSName + "\t\n";
+                            nrsc += scnr[i].Nr + "\t\n";
+                            nrsc = "{\t\n" + nrsc + "\t\n}\t\n";
+                        }
+                        catch (Exception ee)
+                        {
+                            Console.WriteLine(ee);
+                            continue;
+                        }
+                    }
+                    FileSC.Text = nrsc;
                 }
+               
             }
             else
             {
+                
                 Encoding encoding = UTF8Encoding.UTF8;
                 ReadTxtFileLine ReadTxtFileTest1 = new ReadTxtFileLine(path, encoding);
                 while (ReadTxtFileTest1.IsReadEnd > 0)
                 {
                     string str = ReadTxtFileTest1.GetLineStr();  //这里将读出来的1行赋值给str
-                    MessageBox.Show(str, "文件读取内容", MessageBoxButtons.OK);
+                    scnrs = JQstring(str);
+                    if (str=="false")
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        scnr.Add(scnrs);
+                    }
                 }
+
+                for (int i = 0; i < scnr.Count; i++)
+                {
+                    nrsc = scnr[i].Type+"\t\n";
+                    nrsc += scnr[i].ZTColore+"\t\n";
+                    nrsc += scnr[i].JSName+"\t\n";
+                    nrsc += scnr[i].Nr+"\t\n";
+                    nrsc= "{\t\n" + nrsc+ "\t\n}\t\n";
+                }
+                FileSC.Text = nrsc;
             }
 
 
@@ -240,12 +355,12 @@ namespace jbby
         /// <param name="e"></param>
         private void Button_Click_7(object sender, RoutedEventArgs e)
         {
-            var ss = MessageBox.Show("是否删除？", "提示", (MessageBoxButtons)MessageBoxButton.OKCancel, (MessageBoxIcon)MessageBoxImage.Question);
-            if (ss == System.Windows.Forms.DialogResult.OK)
+            var ss = MessageBox.Show("是否删除？", "提示", MessageBoxButton.OKCancel, MessageBoxIcon.Question);
+            if (ss == MessageBoxResult.OK)
             {
                 if (Settinges.SelectedIndex < 0)
                 {
-                    MessageBox.Show("请选择要删除的数据！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBox.Show("请选择要删除的数据！", "警告", MessageBoxButton.OK, MessageBoxIcon.Warning);
                 }
                 else
                 {
@@ -276,7 +391,7 @@ namespace jbby
 
         }
 
-        public static Task<string> OpenWord(string fileName)
+        public static Task<List<string>> OpenWord(string fileName)
         {
             Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();//可以打开word
             Microsoft.Office.Interop.Word.Document doc = null;      //需要记录打开的word
@@ -295,12 +410,20 @@ namespace jbby
                  ref missing, ref missing, ref missing, ref isVisible, ref missing,
                  ref missing, ref missing, ref missing);
 
-                doc.ActiveWindow.Selection.WholeStory();//全选word文档中的数据
-                doc.ActiveWindow.Selection.Copy();//复制数据到剪切板
-                var textes = doc.ActiveWindow.Selection.Text;
+                //doc.ActiveWindow.Selection.WholeStory();//全选word文档中的数据
+                //doc.ActiveWindow.Selection.Copy();//复制数据到剪切板
+                String read = string.Empty;
+                List<string> data = new List<string>();
+                for (int i = 0; i < doc.Paragraphs.Count; i++)
+                {
+                    string temp = doc.Paragraphs[i + 1].Range.Text+"\t\n";
+                    if (temp != string.Empty)
+                        data.Add(temp);
+                }
+                //var textes = doc.ActiveWindow.Selection.Text;
                 return System.Threading.Tasks.Task.Run(() =>
                 {
-                    return textes;
+                    return data;
                 });//richTextBox粘贴数据
                    //richTextBox1.Text = doc.Content.Text;//显示无格式数据
             }
@@ -352,5 +475,45 @@ namespace jbby
         {
 
         }
+
+        public Setting JQstring(string temp)
+        {
+            Setting setting = new Setting();
+            if (temp==null||temp=="")
+            {
+                for (int i = 0; i < settings.Count; i++)
+                {
+                    try
+                    {
+                        var staerindex = settings[i].StaerFH;
+                        var endindex = settings[i].EndFH;
+
+                        int ks = temp.IndexOf(staerindex);
+                        int js = temp.LastIndexOf(endindex);
+                        var jg = temp.Substring(ks, js - ks);
+                        
+                        setting.Nr = jg;
+                        setting.JSName = settings[i].JSName;
+                        setting.ZTColore = settings[i].ZTColore;
+                        setting.Type = settings[i].Type;
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        continue;
+                    }
+
+
+                }
+                return setting;
+            }
+            else
+            {
+                return null;
+            }
+            
+        }
+
+
     }
 }

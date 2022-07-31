@@ -1,8 +1,9 @@
-﻿<Window x:Class="jbby.MainWindow"
+﻿<pu:WindowX x:Class="jbby.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:pu="clr-namespace:Panuon.WPF.UI;assembly=Panuon.WPF.UI"
         xmlns:local="clr-namespace:jbby"
         mc:Ignorable="d"
         Title="转换" WindowStartupLocation="CenterScreen" Cursor="Cross" Width="800" Height="480.992">
@@ -26,15 +27,15 @@
                 <Button Content="重置" Margin="10,224.8,10,31.2" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="110" Height="20" Click="Button_Click_3" Background="#FFE888E5"/>
                 <Button Content="选择文件" Margin="10,199.8,10,0" VerticalAlignment="Top" Grid.Row="1" Height="20" Width="110" Click="Button_Click_2"/>
                 <TreeView Margin="0,0,10,191.2" Grid.RowSpan="2" HorizontalAlignment="Right" Width="110" Height="174" VerticalAlignment="Bottom">
-                    <Button Background="#FFE57272" Content="添加" Height="24" Width="78" Margin="0,12,0,0" Click="Button_Click_4"/>
-                    <Button x:Name="sd" Content="锁定" Width="78" Height="24" Margin="0,12,0,0" Click="Button_Click_6" Background="#FFF7F19E"/>
-                    <Button Content="删除" Width="78" Height="24" Margin="0,12,0,0" Click="Button_Click_7" Background="#FFF6B44E"/>
-                    <Button Content="应用" Width="78" Height="24" Margin="0,12,0,0" Click="Button_Click_5" Background="#FFA1FFEC"/>
+                    <Button Background="#FFE57272" Content="添加" Height="24" Width="78" Click="Button_Click_4" BorderThickness="0,0,0,4" Padding="5,0,5,-4" ScrollViewer.HorizontalScrollBarVisibility="Visible" AutomationProperties.IsOffscreenBehavior="Offscreen" BorderBrush="#FFE57272"/>
+                    <Button x:Name="sd" Content="锁定" Width="78" Height="24" Click="Button_Click_6" Background="#FFF7F19E" BorderBrush="#FFF7F19E" Padding="5,0,5,-3"/>
+                    <Button Content="删除" Width="78" Height="22" Click="Button_Click_7" Background="#FFF6B44E" BorderBrush="#FFF6B44E"/>
+                    <Button Content="应用" Width="78" Height="24" Click="Button_Click_5" Background="#FFA1FFEC" BorderBrush="#FFA1FFEC"/>
                 </TreeView>
-                <Label Content="文件大小：" HorizontalAlignment="Left" Margin="10,90,0,0" Grid.Row="1" VerticalAlignment="Top" Height="25" Width="94"/>
-                <Label Content="文件类型：" HorizontalAlignment="Left" Margin="10,143,0,0" Grid.Row="1" VerticalAlignment="Top" Height="25" Width="94"/>
-                <Label x:Name="wjdx" Content="" HorizontalAlignment="Left" Margin="10,118,0,0" Grid.Row="1" VerticalAlignment="Top"/>
-                <Label x:Name="wjlx" Content="" HorizontalAlignment="Left" Margin="10,168,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+                <Label Content="文件大小：" HorizontalAlignment="Left" Margin="10,90,0,0" Grid.Row="1" VerticalAlignment="Top" Height="25" Width="94" Background="White"/>
+                <Label Content="文件类型：" HorizontalAlignment="Left" Margin="10,143,0,0" Grid.Row="1" VerticalAlignment="Top" Height="25" Width="94" Background="White"/>
+                <Label x:Name="wjdx" Content="" HorizontalAlignment="Left" Margin="10,118,0,0" Grid.Row="1" VerticalAlignment="Top" Background="White"/>
+                <Label x:Name="wjlx" Content="" HorizontalAlignment="Left" Margin="10,168,0,0" Grid.Row="1" VerticalAlignment="Top" Background="White"/>
             </Grid>
 
         </GroupBox>
@@ -64,4 +65,4 @@
         <ProgressBar x:Name="jdt" Grid.ColumnSpan="2" Grid.Column="1" HorizontalAlignment="Left" Height="10" Margin="5.4,0,0,0" VerticalAlignment="Top" Width="140" Loaded="jdt_Loaded" ValueChanged="jdt_ValueChanged"/>
 
     </Grid>
-</Window>
+</pu:WindowX>

@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:jbby"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary Source="pack://application:,,,/Panuon.WPF.UI;component/Control.xaml" />
     </Application.Resources>
 </Application>

@@ -13,6 +13,7 @@ namespace jbby
         public string ZTColore { get; set; }
         public string Type { get; set; }
         public string JSName { get; set; }
+        public string Nr { get; set; } = null;
     }
 
     public class ReadTxtFileLine
