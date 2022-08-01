@@ -187,6 +187,7 @@ namespace jbby
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
             jdt.Value = 0;
+            var nrsc = "";
             var data = settings.AsQueryable();
             List<Setting> setting = data.ToList();
             Setting scnrs = new Setting();
@@ -223,10 +224,6 @@ namespace jbby
                         }
                     }
 
-                    int num = 1;
-                    jdt.Minimum = num;
-                    jdt.Maximum = scnr.Count;
-
                     for (int i = 0; i < scnr.Count; i++)
                     {
                         try
@@ -237,21 +234,11 @@ namespace jbby
                             }
                             else
                             {
-                                ++num;
-                                jdt.Value = i;
-                                if (num==2)
-                                {
-                                    nrsc += "{\t\n";
-                                }
-                                else
-                                {
-                                    nrsc += ",{\t\n";
-                                }
-                                nrsc += string.Format(" \"Type\":\"{0}\", \t\n", scnr[i].Type);
-                                nrsc += string.Format(" \"ZTColore\":\"{0}\", \t\n", scnr[i].ZTColore);
-                                nrsc += string.Format(" \"JSName\":\"{0}\", \t\n", scnr[i].JSName);
-                                nrsc += string.Format(" \"Nr\":\"{0}\" \t", scnr[i].Nr);
-                                nrsc += "\t\n}\t\n";
+                                nrsc = "Type:" + scnr[i].Type + ",\t\n";
+                                nrsc += "ZTColore:" + scnr[i].ZTColore + ",\t\n";
+                                nrsc += "JSName:" + scnr[i].JSName + ",\t\n";
+                                nrsc += "Nr:"+scnr[i].Nr;
+                                nrsc = "{\t\n" + nrsc + "\t\n}\t\n";
                             }
                             
                         }
