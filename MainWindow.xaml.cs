@@ -40,6 +40,7 @@ namespace jbby
         public string filename = "";
         public string wjlxx = "";
         public string text = "";
+        public string nrsc = "";
         public MainWindow()
         {
             InitializeComponent();
@@ -185,7 +186,6 @@ namespace jbby
         /// <param name="e"></param>
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
-            var nrsc = "";
             var data = settings.AsQueryable();
             List<Setting> setting = data.ToList();
             Setting scnrs = new Setting();
@@ -222,6 +222,8 @@ namespace jbby
                         }
                     }
 
+                    int num = 1;
+
                     for (int i = 0; i < scnr.Count; i++)
                     {
                         try
@@ -232,11 +234,20 @@ namespace jbby
                             }
                             else
                             {
-                                nrsc = "Type:" + scnr[i].Type + ",\t\n";
-                                nrsc += "ZTColore:" + scnr[i].ZTColore + ",\t\n";
-                                nrsc += "JSName:" + scnr[i].JSName + ",\t\n";
-                                nrsc += "Nr:"+scnr[i].Nr;
-                                nrsc = "{\t\n" + nrsc + "\t\n}\t\n";
+                                ++num;
+                                if (num==2)
+                                {
+                                    nrsc += "{\t\n";
+                                }
+                                else
+                                {
+                                    nrsc += ",{\t\n";
+                                }
+                                nrsc += string.Format(" \"Type\":\"{0}\", \t\n", scnr[i].Type);
+                                nrsc += string.Format(" \"ZTColore\":\"{0}\", \t\n", scnr[i].ZTColore);
+                                nrsc += string.Format(" \"JSName\":\"{0}\", \t\n", scnr[i].JSName);
+                                nrsc += string.Format(" \"Nr\":\"{0}\" \t", scnr[i].Nr);
+                                nrsc += "\t\n}\t\n";
                             }
                             
                         }
@@ -280,11 +291,20 @@ namespace jbby
                     {
                         try
                         {
-                            nrsc = scnr[i].Type + "\t\n";
-                            nrsc += scnr[i].ZTColore + "\t\n";
-                            nrsc += scnr[i].JSName + "\t\n";
-                            nrsc += scnr[i].Nr + "\t\n";
-                            nrsc = "{\t\n" + nrsc + "\t\n}\t\n";
+                            ++num;
+                            if (num == 2)
+                            {
+                                nrsc += "{\t\n";
+                            }
+                            else
+                            {
+                                nrsc += ",{\t\n";
+                            }
+                            nrsc += string.Format(" \"Type\":\"{0}\", \t\n", scnr[i].Type);
+                            nrsc += string.Format(" \"ZTColore\":\"{0}\", \t\n", scnr[i].ZTColore);
+                            nrsc += string.Format(" \"JSName\":\"{0}\", \t\n", scnr[i].JSName);
+                            nrsc += string.Format(" \"Nr\":\"{0}\" \t", scnr[i].Nr);
+                            nrsc += "\t\n}\t\n";
                         }
                         catch (Exception ee)
                         {
@@ -317,11 +337,20 @@ namespace jbby
 
                 for (int i = 0; i < scnr.Count; i++)
                 {
-                    nrsc = scnr[i].Type+"\t\n";
-                    nrsc += scnr[i].ZTColore+"\t\n";
-                    nrsc += scnr[i].JSName+"\t\n";
-                    nrsc += scnr[i].Nr+"\t\n";
-                    nrsc= "{\t\n" + nrsc+ "\t\n}\t\n";
+                    ++num;
+                    if (num == 2)
+                    {
+                        nrsc += "{\t\n";
+                    }
+                    else
+                    {
+                        nrsc += ",{\t\n";
+                    }
+                    nrsc += string.Format(" \"Type\":\"{0}\", \t\n", scnr[i].Type);
+                    nrsc += string.Format(" \"ZTColore\":\"{0}\", \t\n", scnr[i].ZTColore);
+                    nrsc += string.Format(" \"JSName\":\"{0}\", \t\n", scnr[i].JSName);
+                    nrsc += string.Format(" \"Nr\":\"{0}\" \t", scnr[i].Nr);
+                    nrsc += "\t\n}\t\n";
                 }
                 FileSC.Text = nrsc;
             }
@@ -481,6 +510,10 @@ namespace jbby
             Setting setting = new Setting();
             if (temp==null||temp=="")
             {
+                return null;
+            }
+            else
+            {
                 for (int i = 0; i < settings.Count; i++)
                 {
                     try
@@ -490,8 +523,8 @@ namespace jbby
 
                         int ks = temp.IndexOf(staerindex);
                         int js = temp.LastIndexOf(endindex);
-                        var jg = temp.Substring(ks, js - ks);
-                        
+                        var jg = temp.Substring(ks+1, js - ks);
+
                         setting.Nr = jg;
                         setting.JSName = settings[i].JSName;
                         setting.ZTColore = settings[i].ZTColore;
@@ -502,18 +535,32 @@ namespace jbby
                         Console.WriteLine(e);
                         continue;
                     }
-
-
                 }
                 return setting;
             }
-            else
-            {
-                return null;
-            }
-            
         }
 
-
+        private void Button_Click_9(object sender, RoutedEventArgs e)
+        {
+            var id = Guid.NewGuid().ToString();
+            var temp = System.AppDomain.CurrentDomain.BaseDirectory;
+            temp = temp + "\\sc\\sc"+ id + ".json";
+            if (File.Exists(temp))
+            {
+                File.Delete(temp);
+                FileStream aFile = new FileStream(temp, FileMode.OpenOrCreate);
+                StreamWriter sw = new StreamWriter(aFile);
+                sw.WriteLine(nrsc);
+                sw.Close();
+            }
+            else
+            {
+                FileStream aFile = new FileStream(temp, FileMode.OpenOrCreate);
+                StreamWriter sw = new StreamWriter(aFile);
+                sw.WriteLine(nrsc);
+                sw.Close();
+            }
+            MessageBox.Show("生成并导出成功！", "提示", MessageBoxButton.OK, MessageBoxIcon.Success);
+        }
     }
 }

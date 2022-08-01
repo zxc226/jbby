@@ -31,6 +31,7 @@
                     <Button x:Name="sd" Content="锁定" Width="78" Height="24" Click="Button_Click_6" Background="#FFF7F19E" BorderBrush="#FFF7F19E" Padding="5,0,5,-3"/>
                     <Button Content="删除" Width="78" Height="22" Click="Button_Click_7" Background="#FFF6B44E" BorderBrush="#FFF6B44E"/>
                     <Button Content="应用" Width="78" Height="24" Click="Button_Click_5" Background="#FFA1FFEC" BorderBrush="#FFA1FFEC"/>
+                    <Button Background="#FF92CDF5" Content="生成" Height="24" Width="78" Click="Button_Click_9" BorderThickness="0,0,0,4" Padding="5,0,5,-4" ScrollViewer.HorizontalScrollBarVisibility="Visible" AutomationProperties.IsOffscreenBehavior="Offscreen" BorderBrush="#FF92CDF5"/>
                 </TreeView>
                 <Label Content="文件大小：" HorizontalAlignment="Left" Margin="10,90,0,0" Grid.Row="1" VerticalAlignment="Top" Height="25" Width="94" Background="White"/>
                 <Label Content="文件类型：" HorizontalAlignment="Left" Margin="10,143,0,0" Grid.Row="1" VerticalAlignment="Top" Height="25" Width="94" Background="White"/>
