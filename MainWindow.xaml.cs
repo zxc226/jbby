@@ -187,6 +187,7 @@ namespace jbby
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
             jdt.Value = 0;
+            var nrsc = "";
             var data = settings.AsQueryable();
             List<Setting> setting = data.ToList();
             Setting scnrs = new Setting();
@@ -223,30 +224,30 @@ namespace jbby
                         }
                     }
 
-                    int num = 1;
-                    jdt.Minimum = num;
-                    jdt.Maximum = scnr.Count;
-
                     for (int i = 0; i < scnr.Count; i++)
                     {
                         try
                         {
-                            if (scnr[i]==null)
+                            ++num;
+                            if (i %2== 0)
                             {
-                                continue;
+                                nrsc += "{\t\n";
                             }
                             else
                             {
-                                ++num;
-                                jdt.Value = i;
-                                if (num==2)
-                                {
-                                    nrsc += "{\t\n";
-                                }
-                                else
-                                {
-                                    nrsc += ",{\t\n";
-                                }
+                                nrsc += ",{\t\n";
+                            }
+
+                            if (scnr[i]==null)
+                            {
+                                nrsc += string.Format(" \"Type\":\"{0}\", \t\n", "");
+                                nrsc += string.Format(" \"ZTColore\":\"{0}\", \t\n", "");
+                                nrsc += string.Format(" \"JSName\":\"{0}\", \t\n", "");
+                                nrsc += string.Format(" \"Nr\":\"{0}\" \t", "");
+                                nrsc += "\t\n}\t\n";
+                            }
+                            else
+                            {
                                 nrsc += string.Format(" \"Type\":\"{0}\", \t\n", scnr[i].Type);
                                 nrsc += string.Format(" \"ZTColore\":\"{0}\", \t\n", scnr[i].ZTColore);
                                 nrsc += string.Format(" \"JSName\":\"{0}\", \t\n", scnr[i].JSName);
@@ -260,7 +261,6 @@ namespace jbby
                             Console.WriteLine(ee);
                             continue;
                         }
-                        
                     }
                     FileSC.Text = nrsc;
                 }
@@ -296,7 +296,7 @@ namespace jbby
                         try
                         {
                             ++num;
-                            if (num == 2)
+                            if (i%2 == 0)
                             {
                                 nrsc += "{\t\n";
                             }
@@ -304,11 +304,23 @@ namespace jbby
                             {
                                 nrsc += ",{\t\n";
                             }
-                            nrsc += string.Format(" \"Type\":\"{0}\", \t\n", scnr[i].Type);
-                            nrsc += string.Format(" \"ZTColore\":\"{0}\", \t\n", scnr[i].ZTColore);
-                            nrsc += string.Format(" \"JSName\":\"{0}\", \t\n", scnr[i].JSName);
-                            nrsc += string.Format(" \"Nr\":\"{0}\" \t", scnr[i].Nr);
-                            nrsc += "\t\n}\t\n";
+
+                            if (scnr[i] == null)
+                            {
+                                nrsc += string.Format(" \"Type\":\"{0}\", \t\n", "");
+                                nrsc += string.Format(" \"ZTColore\":\"{0}\", \t\n", "");
+                                nrsc += string.Format(" \"JSName\":\"{0}\", \t\n", "");
+                                nrsc += string.Format(" \"Nr\":\"{0}\" \t", "");
+                                nrsc += "\t\n}\t\n";
+                            }
+                            else
+                            {
+                                nrsc += string.Format(" \"Type\":\"{0}\", \t\n", scnr[i].Type);
+                                nrsc += string.Format(" \"ZTColore\":\"{0}\", \t\n", scnr[i].ZTColore);
+                                nrsc += string.Format(" \"JSName\":\"{0}\", \t\n", scnr[i].JSName);
+                                nrsc += string.Format(" \"Nr\":\"{0}\" \t", scnr[i].Nr);
+                                nrsc += "\t\n}\t\n";
+                            }
                         }
                         catch (Exception ee)
                         {
@@ -342,7 +354,7 @@ namespace jbby
                 for (int i = 0; i < scnr.Count; i++)
                 {
                     ++num;
-                    if (num == 2)
+                    if (i %2 == 0)
                     {
                         nrsc += "{\t\n";
                     }
@@ -350,11 +362,23 @@ namespace jbby
                     {
                         nrsc += ",{\t\n";
                     }
-                    nrsc += string.Format(" \"Type\":\"{0}\", \t\n", scnr[i].Type);
-                    nrsc += string.Format(" \"ZTColore\":\"{0}\", \t\n", scnr[i].ZTColore);
-                    nrsc += string.Format(" \"JSName\":\"{0}\", \t\n", scnr[i].JSName);
-                    nrsc += string.Format(" \"Nr\":\"{0}\" \t", scnr[i].Nr);
-                    nrsc += "\t\n}\t\n";
+
+                    if (scnr[i] == null)
+                    {
+                        nrsc += string.Format(" \"Type\":\"{0}\", \t\n", "");
+                        nrsc += string.Format(" \"ZTColore\":\"{0}\", \t\n", "");
+                        nrsc += string.Format(" \"JSName\":\"{0}\", \t\n", "");
+                        nrsc += string.Format(" \"Nr\":\"{0}\" \t", "");
+                        nrsc += "\t\n}\t\n";
+                    }
+                    else
+                    {
+                        nrsc += string.Format(" \"Type\":\"{0}\", \t\n", scnr[i].Type);
+                        nrsc += string.Format(" \"ZTColore\":\"{0}\", \t\n", scnr[i].ZTColore);
+                        nrsc += string.Format(" \"JSName\":\"{0}\", \t\n", scnr[i].JSName);
+                        nrsc += string.Format(" \"Nr\":\"{0}\" \t", scnr[i].Nr);
+                        nrsc += "\t\n}\t\n";
+                    }
                 }
                 FileSC.Text = nrsc;
             }
