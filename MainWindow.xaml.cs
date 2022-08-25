@@ -229,7 +229,7 @@ namespace jbby
                         try
                         {
                             ++num;
-                            if (i %2== 0)
+                            if (i == 0)
                             {
                                 nrsc += "{\t\n";
                             }
@@ -296,7 +296,7 @@ namespace jbby
                         try
                         {
                             ++num;
-                            if (i%2 == 0)
+                            if (i == 1)
                             {
                                 nrsc += "{\t\n";
                             }
@@ -354,7 +354,7 @@ namespace jbby
                 for (int i = 0; i < scnr.Count; i++)
                 {
                     ++num;
-                    if (i %2 == 0)
+                    if (i == 1)
                     {
                         nrsc += "{\t\n";
                     }
@@ -578,14 +578,14 @@ namespace jbby
                 File.Delete(temp);
                 FileStream aFile = new FileStream(temp, FileMode.OpenOrCreate);
                 StreamWriter sw = new StreamWriter(aFile);
-                sw.WriteLine(nrsc);
+                sw.WriteLine(FileSC.Text);
                 sw.Close();
             }
             else
             {
                 FileStream aFile = new FileStream(temp, FileMode.OpenOrCreate);
                 StreamWriter sw = new StreamWriter(aFile);
-                sw.WriteLine(nrsc);
+                sw.WriteLine(FileSC.Text);
                 sw.Close();
             }
             MessageBox.Show("生成并导出成功！", "提示", MessageBoxButton.OK, MessageBoxIcon.Success);
